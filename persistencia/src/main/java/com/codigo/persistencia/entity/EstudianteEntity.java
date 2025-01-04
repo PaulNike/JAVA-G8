@@ -11,6 +11,15 @@ import java.util.Set;
 @Table(name = "estudiante")
 @Getter
 @Setter
+//SOLO TE SIRVE SI TU SP, NO DEVUELVE UN CURSOR
+@NamedStoredProcedureQuery(
+        name = "buscarestudiantesporcurso",
+        procedureName = "buscar_estudiantes_por_curso",
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "nombreCurso", type = String.class)
+        },
+        resultClasses = EstudianteEntity.class
+)
 public class EstudianteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,10 +8,14 @@ import com.codigo.persistencia.entity.EstudianteEntity;
 import com.codigo.persistencia.repository.CursoRepository;
 import com.codigo.persistencia.repository.EstudianteRepository;
 import com.codigo.persistencia.service.EstudianteService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.StoredProcedureQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -23,7 +27,7 @@ public class EstudianteServiceImpl implements EstudianteService {
 
     private final EstudianteRepository estudianteRepository;
     private final CursoRepository cursoRepository;
-
+    private final EntityManager entityManager;
     @Override
     public EstudianteEntity guardarEstudiante(RequestEstudiante requestEstudiante) {
         EstudianteEntity estudianteEntity = new EstudianteEntity();
@@ -63,6 +67,18 @@ public class EstudianteServiceImpl implements EstudianteService {
     @Override
     public List<EstudianteEntity> obtenerTodosPorCurso(String curso) {
         return estudianteRepository.buscarEstudianteXCurso(curso);
+    }
+
+    @Override
+    public List<EstudianteEntity> obtenerTodosPorCursoFuncion(String curso) {
+        //ejecutando nuestro metodo del SP
+        List<Object[]> result = buscarEstudiantesPorCursoProcedure(curso);
+        return estudianteRepository.buscarEstudianteXCursoProcedure(curso);
+    }
+
+    @Override
+    public List<EstudianteEntity> obtenerTodosPorEstado(int estado) {
+        return estudianteRepository.buscarEstudiantesXEstado(estado);
     }
 
     @Override
@@ -131,5 +147,24 @@ public class EstudianteServiceImpl implements EstudianteService {
             response.setObjeto(Optional.of(estudianteRepository.save(estudianteEntity)));
             return response;
         }
+    }
+
+    //ESTA ES LA MANERA DE EJECUTAR TU SP USANDO ENTITYMANAGER
+    public List<Object[]> buscarEstudiantesPorCursoProcedure(String nombreCurso){
+
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("buscar_estudiantes_por_curso2");
+        query.registerStoredProcedureParameter("nombreCurso", String.class, ParameterMode.IN);
+        //query.registerStoredProcedureParameter("resultado_ref", void.class, ParameterMode.REF_CURSOR);
+
+        //Establecer el valor del parametro de entrada;
+        query.setParameter("nombreCurso", nombreCurso);
+        //Ejecutar tu SP
+        query.execute();
+        //Recuperamos el resutlado de la ejecución
+        List<Object[]> reusltado = query.getResultList();
+        //Imprimiendo
+        reusltado.forEach(objects -> System.out.println(Arrays.toString(objects)));
+        return query.getResultList();
+
     }
 }

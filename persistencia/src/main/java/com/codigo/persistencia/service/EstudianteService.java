@@ -11,6 +11,8 @@ public interface EstudianteService {
     EstudianteEntity obtenerEstudiante(String numDoc);
     List<EstudianteEntity> obtenerTodos();
     List<EstudianteEntity> obtenerTodosPorCurso(String curso);
+    List<EstudianteEntity> obtenerTodosPorCursoFuncion(String curso);
+    List<EstudianteEntity> obtenerTodosPorEstado(int estado);
     EstudianteEntity actualizarEstudiante(String numDoc,
                                           RequestEstudiante requestEstudiante);
     void eliminarEstudiante(String numDoc);

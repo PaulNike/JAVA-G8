@@ -40,7 +40,14 @@ public class EstudianteController {
     public ResponseEntity<List<EstudianteEntity>> todosxCurso(@RequestParam String curso){
         return new ResponseEntity<>(estudianteService.obtenerTodosPorCurso(curso), HttpStatus.OK);
     }
-
+    @GetMapping("/todosXestado")
+    public ResponseEntity<List<EstudianteEntity>> todosxEstado(@RequestParam int estado){
+        return new ResponseEntity<>(estudianteService.obtenerTodosPorEstado(estado), HttpStatus.OK);
+    }
+    @GetMapping("/todosXcursoProcedure")
+    public ResponseEntity<List<EstudianteEntity>> todosxCursoProcedure(@RequestParam String curso){
+        return new ResponseEntity<>(estudianteService.obtenerTodosPorCursoFuncion(curso), HttpStatus.OK);
+    }
 
     @PutMapping("/{numDoc}/actualizar")
     public ResponseEntity<EstudianteEntity> actualizar(@PathVariable("numDoc") String numDoc,
