@@ -154,7 +154,7 @@ public class EstudianteServiceImpl implements EstudianteService {
 
         StoredProcedureQuery query = entityManager.createStoredProcedureQuery("buscar_estudiantes_por_curso2");
         query.registerStoredProcedureParameter("nombreCurso", String.class, ParameterMode.IN);
-        //query.registerStoredProcedureParameter("resultado_ref", void.class, ParameterMode.REF_CURSOR);
+        query.registerStoredProcedureParameter("resultado_ref", void.class, ParameterMode.REF_CURSOR);
 
         //Establecer el valor del parametro de entrada;
         query.setParameter("nombreCurso", nombreCurso);
