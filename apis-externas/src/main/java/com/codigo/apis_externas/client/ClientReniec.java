@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @FeignClient(name = "client-reniec", url = "https://api.apis.net.pe/v2/reniec/")
+//https://api.apis.net.pe/ --> Host
+// v2/reniec/ --> Acceso al controller o Path
+// dni --> EndPoint
+// ?numero=06256217 --> Parametros
 public interface ClientReniec {
 
     @GetMapping(value = "/dni", produces = "application/json" )
