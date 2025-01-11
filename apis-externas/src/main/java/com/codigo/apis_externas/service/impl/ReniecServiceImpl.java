@@ -5,8 +5,11 @@ import com.codigo.apis_externas.aggregates.response.ReniecResponse;
 import com.codigo.apis_externas.aggregates.response.ResponseBase;
 import com.codigo.apis_externas.client.ClientReniec;
 import com.codigo.apis_externas.entity.PersonaEntity;
+import com.codigo.apis_externas.redis.RedisService;
 import com.codigo.apis_externas.repository.PersonaRepository;
 import com.codigo.apis_externas.service.ReniecService;
+import com.codigo.apis_externas.util.Util;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +30,34 @@ public class ReniecServiceImpl implements ReniecService {
     @Autowired
     private PersonaRepository personaRepository;
 
+    @Autowired
+    private RedisService redisService;
+
     @Value("${token.api}")
     private String token;
     @Override
     public ReniecResponse buscarPorDni(String numDni) {
+        ReniecResponse reniecResponse = new ReniecResponse();
         log.info("Buscando Informacion para el DNI: {}", numDni);
-        return execution(numDni);
+        //FLujo para validar la info con redis
+        //1- Recuperar la info de redis
+        String dataRedis = redisService.getDataDesdeRedis(Constants.REDIS_KEY_API_RENIEC+numDni);
+        //Validar
+        if(Objects.nonNull(dataRedis)){
+            log.info("RECUPERANDO INFORMACIÓN DESDE REDIS PARA EL DNI: {}",numDni );
+            reniecResponse = Util.convertirDesdeString(dataRedis,ReniecResponse.class);
+        }else {
+            log.info("RECUPERANDO INFORMACIÓN DESDE EL API DE RENIEC PARA EL DNI: {}",numDni );
+            //Ejecutamos la consulta al api de reniec
+            reniecResponse = execution(numDni);
+            //Convierto el objeto a String
+            String dataParaRedis = Util.convertirAString(reniecResponse);
+            //Guardo en Redis
+            redisService.guardarEnRedis(Constants.REDIS_KEY_API_RENIEC+numDni,
+                    dataParaRedis,
+                    60);
+        }
+        return reniecResponse;
     }
 
     @Override

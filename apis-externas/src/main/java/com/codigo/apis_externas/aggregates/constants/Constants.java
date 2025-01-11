@@ -9,4 +9,6 @@ public class Constants {
     public static final String MENSAJE_OK = "PERSONA REGISTRADA CORRECTAMENTE";
     public static final Integer CODIGO_ERROR = 2004;
     public static final String MENSAJE_ERROR = "ERROR REGISTRANDO A LA PERSONA";
+    public static final String REDIS_KEY_API_RENIEC = "MS:APIS:EXTERNAS:";
+
 }
