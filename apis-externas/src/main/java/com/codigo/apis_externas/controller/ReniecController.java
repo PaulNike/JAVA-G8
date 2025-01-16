@@ -54,7 +54,7 @@ public class ReniecController {
             parameters = @Parameter(
                     name = "numDni",
                     description = "Numero Dni",
-                    required = true,
+                    //required = true,
                     example = "12345678"
             ))
     @ApiResponses({
