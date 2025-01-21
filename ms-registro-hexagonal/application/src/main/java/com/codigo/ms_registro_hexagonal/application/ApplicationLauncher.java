@@ -1,6 +1,5 @@
 package com.codigo.ms_registro_hexagonal.application;
 
-import jakarta.persistence.Entity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
