@@ -13,29 +13,18 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>unit-testing</name>
 	<description>Aprendiendo a realizar pruebas Unitarias</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>17</java.version>
 		<!-- Propiedades para configurar este proyecto con SonarCloud-->
 		<sonar.projectKey>paulnike_unit-testing-g8</sonar.projectKey>
 		<sonar.organization>paulnike</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-		<sonar.login>a0f1f736e6f1f3f9380e57bacda8f666cb5f5639</sonar.login>
 
 		<!-- Propiedades de configuración de JACOCO-->
 		<jacoco.version>0.8.7</jacoco.version>
+
+		<!-- Exclusiones de sonar-->
+		<sonar.exclusions>src/main/java/com/codigo/unit_testing/UnitTestingApplication.java,src/main/java/com/codigo/unit_testing/controller/EmpresaController.java,src/main/java/com/codigo/unit_testing/aggregates/constants/Constants.java</sonar.exclusions>
 
 		<!-- Relacionar a Jacoco con SonarCloud -->
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -95,7 +84,9 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<exclude>**/Constants.java</exclude>
+								<exclude>com.codigo.unit_testing.aggregates.constants.Constants</exclude>
+								<exclude>com.codigo.unit_testing.controller.EmpresaController</exclude>
+								<exclude>com.codigo.unit_testing.UnitTestingApplication</exclude>
 							</excludes>
 						</configuration>
 					</execution>
@@ -109,6 +100,7 @@
 							<outputDirectory>${project.build.directory}/coverage-reports</outputDirectory>
 							<formats>
 								<format>XML</format>
+								<format>HTML</format>
 							</formats>
 						</configuration>
 					</execution>

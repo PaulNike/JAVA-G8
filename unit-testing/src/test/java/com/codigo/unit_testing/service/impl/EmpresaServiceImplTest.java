@@ -121,7 +121,6 @@ class EmpresaServiceImplTest {
         assertEquals(Constants.CODE_EMPRESA_NO_EXIST,resultado.getBody().getCode());
         assertEquals(Constants.MSJ_EMPRESA_NO_EXIST,resultado.getBody().getMessage());
         assertFalse(resultado.getBody().getObjeto().isPresent());
-        //assertSame(empresa,resultado.getBody().getObjeto().get());
     }
 
     @Test

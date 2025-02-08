@@ -1,6 +1,9 @@
 package com.codigo.unit_testing.aggregates.constants;
 
 public class Constants {
+    private Constants(){
+        throw new UnsupportedOperationException("No se pudo instanciar la clase");
+    }
     //Status
     public static final Integer STATUS_ACTIVE=1;
     //AUDIT
