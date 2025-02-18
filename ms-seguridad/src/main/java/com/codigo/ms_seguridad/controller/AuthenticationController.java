@@ -8,6 +8,8 @@ import com.codigo.ms_seguridad.service.AuthenticationService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +17,16 @@ import java.security.Key;
 import java.util.Base64;
 import java.util.List;
 
+@RefreshScope
 @RestController
-@RequestMapping("api/authentication/v1/")
+@RequestMapping("/api/authentication/v1/")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+
+    @Value("${dato.propiedad}")
+    private  String valorPropiedad;
 
     @PostMapping("/signupuser")
     public ResponseEntity<Usuario> signUpUser(@RequestBody SignUpRequest signUpRequest){
@@ -28,6 +34,7 @@ public class AuthenticationController {
     }
     @PostMapping("/signupadmin")
     public ResponseEntity<Usuario> signUpUAdmin(@RequestBody SignUpRequest signUpRequest){
+
         return ResponseEntity.ok(authenticationService.signUpAdmin(signUpRequest));
     }
     @GetMapping("/all")
@@ -51,6 +58,10 @@ public class AuthenticationController {
     public ResponseEntity<SignInResponse> refreshToken(
             @RequestParam String refreshToken) throws IllegalAccessException {
         return ResponseEntity.ok(authenticationService.getTokenByRefreshToken(refreshToken));
+    }
+    @GetMapping("/prueba")
+    public ResponseEntity<String> getPrueba(){
+        return ResponseEntity.ok(valorPropiedad);
     }
 
 }

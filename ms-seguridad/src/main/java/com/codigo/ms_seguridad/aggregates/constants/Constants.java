@@ -9,7 +9,8 @@ public class Constants {
     public static final String REFRESH = "refresh";
     public static final String ACCESS = "access";
     public static final String ENDPOINTS_PERMIT = "/api/authentication/v1/**";
-
+    public static final String ENDPOINTS_ACTUATOR = "/actuator/refresh";
+    public static final String ENDPOINTS_ACTUATOR_BUS = "/actuator/busrefresh";
     public static final String ENDPOINTS_USER= "/api/user/v1/**";
     public static final String ENDPOINTS_ADMIN = "/api/admin/v1/**";
 }
